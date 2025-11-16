@@ -1,15 +1,46 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AIRenta"
+version = "0.1.0"
+description = "A telegram bot that automatically selects apartments according to your criteria and sends direct links to ads."
+#readme = ""
+requires-python = ">=3.11"
+dependencies = [
+    "celery>=5.3.0,<6.0.0",
+    "aioredis>=2.0.0,<3.0.0",
+    "aiogram>=3.0.0,<4.0.0",
+    "sqlalchemy>=2.0.0,<3.0.0",
+    "alembic>=1.12.0,<2.0.0",
+    "fastapi[all]>=0.121.2",
+    "uvicorn[standard]>=0.38.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0,<1.0.0",
+    "pre-commit>=3.0.0,<4.0.0",
+    "pytest>=7.0.0,<8.0.0",
+    "pytest-asyncio>=0.21.0,<1.0.0",
+    "httpx>=0.24.0,<1.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+# Настройки Ruff
+[tool.ruff]
 # Поддержка версии Python
 target-version = "py311"
 
 # Основные настройки
-line-length = 120 # Максимальная длина строки для кода
-indent-width = 4 # Ширина отступа
-
-# Каталоги, которые следует учитывать при разрешении импорта из first/third-party источников
-src = ["src"]
+line-length = 120
+indent-width = 4
 
 # Настройки линтера
-[lint]
+[tool.ruff.lint]
 # Нестабильные и находящиеся в предварительной версии правила
 preview = true
 # Правила, которые должен применять линтер
@@ -33,26 +64,19 @@ select = [
 ]
 # Игнорирование конкретных предупреждений линтера
 ignore = [
-    "C408",  # Ненужный вызов dict, list и т.д.
-    "RUF001", # Игнорирование похожих символов с разными ASCII
-    "RUF002", # Игнорирование похожих символов с разными ASCII
-    "RUF003", # Игнорирование похожих символов с разными ASCII
-    "S110",  # try-except-pass
+    "C408",    # Ненужный вызов dict, list и т.д.
+    "RUF001",  # Игнорирование похожих символов с разными ASCII
+    "RUF002",  # Игнорирование похожих символов с разными ASCII
+    "RUF003",  # Игнорирование похожих символов с разными ASCII
+    "S110",    # try-except-pass
 ]
-# Исключение директорий и файлов из линтинга
-exclude = [
-    "src/tests/**",
-]
+
 # Ошибки, которые могут быть исправлены автоматически
 fixable = [
-    "I", # cортировка испортов
+    "I", # сортировка импортов
 ]
 
 # Настройки форматтера
-[format]
-quote-style = "single" # 'single' для одинарных, "double" для двойных кавычек
+[tool.ruff.format]
+quote-style = "single"
 indent-style = "space"
-
-# Дополнительные настройки для плагинов
-[lint.flake8-bandit]
-check-typed-exception = true # Проверка типизированных исключений
