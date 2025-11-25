@@ -6,7 +6,7 @@ from dotenv import  load_dotenv
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandObject, Command
 from services.tg_bot_service.apartment_utils import format_flat, format_flats_list, fetch_and_send_flats
-
+from config import config
 load_dotenv()
 
 BOT_TOKEN = os.environ['BOT_TOKEN']
@@ -17,8 +17,11 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
+
+# TODO разнести по директориям и файлам(подсказка routers)
 @dp.message(Command('start'))
 async def cmd_start(message: types.Message):
+    # TODO целые тексты лучше выносить в константы
     await message.answer('Привет! Я бот, который автоматически подбирает квартиры по вашим критериям и отправляет прямые ссылки на объявления')
 
 @dp.message(Command('search'))
@@ -45,10 +48,12 @@ async def cmd_search(message: types.Message, command: CommandObject):
 
     await fetch_and_send_flats(message, url)
 
+
 @dp.message(Command('get_apartments'))
 async def cmd_get_apartments(message: types.Message):
     url = f'{FASTAPI_BASE_URL}apartments'
     await fetch_and_send_flats(message, url)
+
 
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
